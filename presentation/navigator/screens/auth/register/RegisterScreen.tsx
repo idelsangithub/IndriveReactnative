@@ -5,5 +5,5 @@ export default function RegisterScreen() {
         <View>
             <Text>Register Screen</Text>
         </View>
-    )
+    );
 }

@@ -15,18 +15,21 @@ export const MainStackNavigator = () => {
         <Stack.Navigator>
 
 
-        <Stack.Screen 
-            name="LoginScreen"
-            component={LoginScreen}
-        />
+            <Stack.Screen 
+                options={{ 
+                    headerShown: false
+                 }}
+                name="LoginScreen"
+                component={LoginScreen}
+            />
 
-        <Stack.Screen 
-            name="RegisterScreen"
-            component={RegisterScreen}
-        />
+            <Stack.Screen 
+                name="RegisterScreen"
+                component={RegisterScreen}
+            />
 
         
 
-    </Stack.Navigator>
+        </Stack.Navigator>
     )
 }

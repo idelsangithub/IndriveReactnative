@@ -1,25 +1,28 @@
 import { StyleSheet, Text, View, Image } from 'react-native';
 import DefaultRoundedBotton from '../../../../components/DefaultRoundedBotton';
 import DefaultTextInput from '../../../../components/DefaultTextInput';
+import { StackScreenProps } from '@react-navigation/stack';
+import { RootStackParamList } from '../../../MainStackNavigator';
 
 
-export default function LoginScreen(){
+interface Props extends StackScreenProps<RootStackParamList, 'LoginScreen'>{};
+export default function LoginScreen({ navigation, route }: Props){
     return (
         <View style={styles.container}>
               <Image 
                 style={styles.imageBackgroud}
-                source={ require('./assets/city.jpg') }
+                source={ require('../../../../../assets/city.jpg') }
               />
               <View style={styles.form}>
                 <Image 
                   style={styles.imageUser}
-                  source={ require('./assets/user.png') }
+                  source={ require('../../../../../assets/user.png') }
                 />
                 <Text style={styles.textLogin}>LOGIN</Text>
         
                 
                 <DefaultTextInput 
-                  icon={require('./assets/email.png')}
+                  icon={require('../../../../../assets/email.png')}
                   placeholder='Correo Electrónico'
                   onChangeText={text => {}}
                   value=''
@@ -27,7 +30,7 @@ export default function LoginScreen(){
                 />
         
                 <DefaultTextInput 
-                  icon={require('./assets/password.png')}
+                  icon={require('../../../../../assets/password.png')}
                   placeholder='Contraseña'
                   onChangeText={text => {}}
                   value=''
@@ -50,7 +53,7 @@ export default function LoginScreen(){
         
                 <DefaultRoundedBotton
                   text='Registrate'
-                  onPress={ () => {}}
+                  onPress={ () => navigation.navigate('RegisterScreen')}
                   backgroundColor='black'
                 />
                  
