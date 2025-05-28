@@ -24,6 +24,9 @@ export const MainStackNavigator = () => {
             />
 
             <Stack.Screen 
+                options={{ 
+                        headerShown: false
+                    }}
                 name="RegisterScreen"
                 component={RegisterScreen}
             />

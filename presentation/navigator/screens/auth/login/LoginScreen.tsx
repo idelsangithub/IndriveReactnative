@@ -1,12 +1,37 @@
-import { StyleSheet, Text, View, Image } from 'react-native';
+import { Text, View, Image, Alert } from 'react-native';
 import DefaultRoundedBotton from '../../../../components/DefaultRoundedBotton';
 import DefaultTextInput from '../../../../components/DefaultTextInput';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../../MainStackNavigator';
+import styles from './Styles';
+import { useState } from 'react';
+import EmailValidator from '../../../../utils/EmailValidator';
+
+
 
 
 interface Props extends StackScreenProps<RootStackParamList, 'LoginScreen'>{};
 export default function LoginScreen({ navigation, route }: Props){
+    // estados de las propiedades
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+
+    const handleLogin = () => {
+      if(email === '' || password === ''){
+        Alert.alert('Error', 'El email y el password no pueden estar vacios')
+        return;
+      }
+
+      if(!EmailValidator(email)){
+        Alert.alert('Error', 'El email no es válido')
+        return;
+      }
+
+      console.log(email);
+      console.log(password);
+    }
+
+
     return (
         <View style={styles.container}>
               <Image 
@@ -24,23 +49,25 @@ export default function LoginScreen({ navigation, route }: Props){
                 <DefaultTextInput 
                   icon={require('../../../../../assets/email.png')}
                   placeholder='Correo Electrónico'
-                  onChangeText={text => {}}
-                  value=''
+                  onChangeText={setEmail}
+                  value={email}
                   keyboardType='email-address'
                 />
         
                 <DefaultTextInput 
                   icon={require('../../../../../assets/password.png')}
                   placeholder='Contraseña'
-                  onChangeText={text => {}}
-                  value=''
+                  onChangeText={setPassword}
+                  value={password}
                   secureTextEntry={true}
                   
                 />
         
                 <DefaultRoundedBotton
                   text='Iniciar Sesion'
-                  onPress={ () => {}}
+                  onPress={ () => { 
+                    handleLogin();
+                  }}
                 />        
                 
         
@@ -64,61 +91,3 @@ export default function LoginScreen({ navigation, route }: Props){
     )
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: 'black',
-    alignItems: 'center',
-    justifyContent: 'center',
-   
-  },
-  imageBackgroud: {
-    width: '100%',
-    height: '100%',
-    opacity: 0.7,
-    marginBottom: 15
-
-  },
-  form: {
-    width: '87%',
-    height: '80%',
-    position: 'absolute',
-    backgroundColor: 'rgba(255, 255, 255, 0.2)',
-    borderRadius: 40,
-    justifyContent: 'center',
-    paddingHorizontal: 25,
-    
-  },
-  imageUser: {
-    width: 150,
-    height: 150,
-    alignSelf: 'center'
-
-  },
-  textLogin: {
-    color: 'white',
-    fontSize: 25,
-    fontWeight: 'bold',
-    alignSelf: 'center'
-  },
-    
-  
-  textDontHaveAccount: {
-    color: 'white'
-  },
-  
-  
-  containerDontHaveAccount: {
-    flexDirection: 'row',
-    alignSelf: 'center',
-    alignItems: 'center',
-    marginTop: 15
-  },
-  divider: {
-    height: 1,
-    width: 68,
-    backgroundColor: 'white',
-    marginHorizontal: 5
-  }
-
-});
