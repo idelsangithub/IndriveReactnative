@@ -6,6 +6,7 @@ import { RootStackParamList } from '../../../MainStackNavigator';
 import styles from './Styles';
 import { useState } from 'react';
 import EmailValidator from '../../../../utils/EmailValidator';
+import { container } from '../../../../../di/container'
 
 
 
@@ -16,7 +17,11 @@ export default function LoginScreen({ navigation, route }: Props){
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    const handleLogin = () => {
+    //arquitectura 
+    
+    const loginVieModel = container.resolve('loginViewModel')
+
+    const handleLogin = async () => {
       if(email === '' || password === ''){
         Alert.alert('Error', 'El email y el password no pueden estar vacios')
         return;
@@ -27,9 +32,15 @@ export default function LoginScreen({ navigation, route }: Props){
         return;
       }
 
-      console.log(email);
-      console.log(password);
+      const response = await loginVieModel.login(email, password);
+      console.log('RESPONSE', response);
+      
+      //await login(email, password);     
+
+      
     }
+
+    
 
 
     return (
