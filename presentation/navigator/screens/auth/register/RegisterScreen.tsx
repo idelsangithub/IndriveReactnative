@@ -6,6 +6,8 @@ import { StackScreenProps } from "@react-navigation/stack";
 import { RootStackParamList } from "../../../MainStackNavigator";
 import { useState } from "react";
 import EmailValidator from "../../../../utils/EmailValidator";
+import { container } from "../../../../../di/container";
+import { RegisterViewModel } from "./RegisterViewModel";
 
 interface Props extends StackScreenProps<RootStackParamList, 'RegisterScreen'>{}
 export default function RegisterScreen({navigation, route}: Props) {
@@ -13,10 +15,13 @@ export default function RegisterScreen({navigation, route}: Props) {
     const [name, setName] = useState('');
     const [lastname, setLastname] = useState('');
     const [email, setEmail] = useState('');
-    const [telefono, setTelefono] = useState('');
+    const [phone, setPhone] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     //funcion para manejar los errores de las propiedades
+
+    const registerViewModel: RegisterViewModel = container.resolve('registerVIewModel');
+
     const handlerRegister = () => {
         //nombre
         if(name === ''){
@@ -39,7 +44,7 @@ export default function RegisterScreen({navigation, route}: Props) {
             return;
         }
 
-        if(telefono === ''){
+        if(phone === ''){
             Alert.alert('Error', 'El Teléfono es obligatorio');
             return;
         }
@@ -59,12 +64,16 @@ export default function RegisterScreen({navigation, route}: Props) {
             return;
         }
 
-        console.log('Nombre', name);
-        console.log('Apellido', lastname);
-        console.log('Email', email);
-        console.log('Telefono', telefono);
-        console.log('Password', password);
-        console.log('Confirm Password', confirmPassword);
+        const response = registerViewModel.register({
+            name: name,
+            lastname: lastname,
+            email: email,
+            phone: phone,
+            password: password
+            
+        });
+
+        console.log('Response: ', response);
 
     };
 
@@ -122,8 +131,8 @@ export default function RegisterScreen({navigation, route}: Props) {
 
                     <DefaultTextInput
                         placeholder="Teléfono"
-                        value={telefono}
-                        onChangeText={setTelefono}
+                        value={phone}
+                        onChangeText={setPhone}
                         keyboardType="numeric"
                         icon={require('../../../../../assets/phone.png')}
                     />
