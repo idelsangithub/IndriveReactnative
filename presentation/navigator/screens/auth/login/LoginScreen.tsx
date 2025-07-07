@@ -7,6 +7,9 @@ import styles from './Styles';
 import { useState } from 'react';
 import EmailValidator from '../../../../utils/EmailValidator';
 import { container } from '../../../../../di/container'
+import { useAuth } from '../../../../hooks/useAuth';
+import { AuthResponse } from '../../../../../domain/models/AuthResponse';
+import { ErrorResponse } from '../../../../../domain/models/ErrorResponse';
 
 
 
@@ -19,7 +22,9 @@ export default function LoginScreen({ navigation, route }: Props){
 
     //arquitectura 
     
-    const loginVieModel = container.resolve('loginViewModel')
+    const loginVieModel = container.resolve('loginViewModel');
+
+    const { authResponse, saveAuthSession } = useAuth();
 
     const handleLogin = async () => {
       if(email === '' || password === ''){
@@ -32,7 +37,12 @@ export default function LoginScreen({ navigation, route }: Props){
         return;
       }
 
-      const response = await loginVieModel.login(email, password);
+      const response  = await loginVieModel.login(email, password);
+
+      if('token' in response){ //login exitoso
+        saveAuthSession(response);
+        console.log('RESPONSE login exitoso');
+      }
       console.log('RESPONSE', response);
       
       //await login(email, password);     
