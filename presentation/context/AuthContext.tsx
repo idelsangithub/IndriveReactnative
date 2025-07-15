@@ -14,8 +14,8 @@ export interface AuthContextProps {
 export const AuthContext = createContext( {} as AuthContextProps); //castiar el objeto al nombre de la interfacer realizada anterior
 
 //constaste que sirve para proveedor de información el que implemnta las propiedas descrita anteriormente
-export const AuthProvider = ({children}: any) => {
-    const localStorage = new LocalStorage(); //instaciamos la clase para implementar lo metodos o funcionmes
+export const AuthProvider = ({children, authUseCases}: any) => {
+   
     const [authResponse, setAuthResponse] = useState<AuthResponse | null>(null); // al principio va null ya que no se posee informacion
     
     useEffect(() => {
@@ -26,21 +26,20 @@ export const AuthProvider = ({children}: any) => {
 
     //realizar las funciones que se tienen definidas en las propiedades
     const saveAuthSession = async (authResponse: AuthResponse) => { //guarda la info en session npm i @react-native-async-storage/async-storage
-        localStorage.save("auth", JSON.stringify(authResponse));
+        await authUseCases.saveAuthSession.execute(authResponse);
         setAuthResponse(authResponse);
     }
 
     const getAuthSession = async () => {
 
-        const data = await localStorage.getItem('auth');
-        const authData: AuthResponse = JSON.parse(data as any);
+        const authData = await authUseCases.getAuthSession.execute();
         console.log('Session Data: ', authData);
         setAuthResponse(authData);
 
     }
 
     const removeAuthSession = async () => {
-
+        await authUseCases.removetAuthSession.execute();
     }
 
     return (
