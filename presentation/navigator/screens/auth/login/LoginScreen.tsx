@@ -4,7 +4,7 @@ import DefaultTextInput from '../../../../components/DefaultTextInput';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../../MainStackNavigator';
 import styles from './Styles';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import EmailValidator from '../../../../utils/EmailValidator';
 import { container } from '../../../../../di/container'
 import { useAuth } from '../../../../hooks/useAuth';
@@ -26,6 +26,19 @@ export default function LoginScreen({ navigation, route }: Props){
 
     const { authResponse, saveAuthSession } = useAuth();
 
+    useEffect(() => {
+      if(authResponse !== null && authResponse !== undefined){
+          if(authResponse.user.roles!.length > 1){
+            navigation.replace('RolesScreen')
+          }else{
+            //por defecto la pantalla de cliente
+            navigation.replace('ClientHomeScreen');
+          }
+      }
+      
+    }, [authResponse])
+    
+
     const handleLogin = async () => {
       if(email === '' || password === ''){
         Alert.alert('Error', 'El email y el password no pueden estar vacios')
@@ -40,8 +53,8 @@ export default function LoginScreen({ navigation, route }: Props){
       const response  = await loginVieModel.login(email, password);
 
       if('token' in response){ //login exitoso
-        saveAuthSession(response);
-        navigation.navigate('RolesScreen');
+        saveAuthSession(response);       
+        
         console.log('RESPONSE login exitoso');
 
       }

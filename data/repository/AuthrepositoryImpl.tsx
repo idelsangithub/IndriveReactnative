@@ -29,7 +29,7 @@ export class AuthRespositoryImpl implements AuthRepository {
        this.localStorage.save("auth", JSON.stringify(authResponse));       
     }
     async getAuthSession(): Promise<AuthResponse> {
-        const data = await localStorage.getItem('auth');
+        const data = await this.localStorage.getItem('auth');
         const authData: AuthResponse = JSON.parse(data as any);
         return authData;
     }
